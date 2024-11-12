@@ -18,6 +18,8 @@ const nutrientThresholds = {
     '果糖(g)': 50     // Max fructose
 };
 
+const potassiumConstant = 200;
+
 let foodsData = []; // Global variable to store foods data
 let selectedFoods = []; // Store selected food items
 
@@ -50,7 +52,7 @@ function updateMineralDisplay() {
 
     
     const selectedMineral = document.querySelector('input[name="mineral"]:checked').value;
-    const threshold = selectedMineral.includes('mg') ? 150 : 5;
+    const threshold = selectedMineral.includes('mg') ? potassiumConstant : 5;
     const unit = selectedMineral.includes('mg') ? 'mg' : 'g';
     
     const nutrientThresholdsElement = document.getElementById('nutrient-thresholds');
@@ -59,8 +61,8 @@ function updateMineralDisplay() {
     document.getElementById('selected-nutrient').textContent = selectedMineral.replace(/\(.*\)/, '');
     document.getElementById('nutrient-total').textContent = `0 ${unit}`;
 
-    document.getElementById('low-content-limit').textContent = `150 ${unit}`;
-    document.getElementById('high-content-limit').textContent = `150 ${unit}`;
+    document.getElementById('low-content-limit').textContent = `${potassiumConstant} ${unit}`;
+    document.getElementById('high-content-limit').textContent = `${potassiumConstant} ${unit}`;
 
     // Separate foods based on selected mineral content
     const lowContentFoods = foodsData.filter(food => parseFloat(food[selectedMineral]) <= threshold);
