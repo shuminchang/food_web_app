@@ -50,37 +50,33 @@ async function displayFood() {
 function updateMineralDisplay() {
     resetSelection();
 
-    
-    const selectedMineral = document.querySelector('input[name="mineral"]:checked').value;
+    const selectedMineral = $('input[name="mineral"]:checked').val();
     const threshold = selectedMineral.includes('mg') ? potassiumConstant : 5;
     const unit = selectedMineral.includes('mg') ? 'mg' : 'g';
     
-    const nutrientThresholdsElement = document.getElementById('nutrient-thresholds');
-    nutrientThresholdsElement.textContent = `(每日建議上限 ${nutrientThresholds[selectedMineral]} ${unit} )`;
-
-    document.getElementById('selected-nutrient').textContent = selectedMineral.replace(/\(.*\)/, '');
-    document.getElementById('nutrient-total').textContent = `0 ${unit}`;
-
-    document.getElementById('low-content-limit').textContent = `${potassiumConstant} ${unit}`;
-    document.getElementById('high-content-limit').textContent = `${potassiumConstant} ${unit}`;
+    $('#nutrient-thresholds').text(`(每日建議上限 ${nutrientThresholds[selectedMineral]} ${unit} )`);
+    $('#selected-nutruent').text(selectedMineral.replace(/\(.*\)/, ''));
+    $('#nutrient-total').text(`0 ${unit}`);
+    $('#low-content-limit').text(`${potassiumConstant} ${unit}`);
+    $('#high-content-limit').text(`${potassiumConstant} ${unit}`);
 
     // Separate foods based on selected mineral content
     const lowContentFoods = foodsData.filter(food => parseFloat(food[selectedMineral]) <= threshold);
     const highContentFoods = foodsData.filter(food => parseFloat(food[selectedMineral]) > threshold);
     
-    displayCategory(lowContentFoods, 'low-results', selectedMineral, unit);
-    displayCategory(highContentFoods, 'high-results', selectedMineral, unit);
+    displayCategory(lowContentFoods, '#low-results', selectedMineral, unit);
+    displayCategory(highContentFoods, '#high-results', selectedMineral, unit);
 }
 
 function displayCategory(foodList, elementId, mineral, unit) {
-    const resultsDiv = document.getElementById(elementId);
-    resultsDiv.innerHTML = '';
+    const resultsDiv = $(elementId);
+    resultsDiv.empty();
 
     foodList.sort((a, b) => parseFloat(a[mineral]) - parseFloat(b[mineral]));
 
     foodList.forEach(food => {
         const foodDiv = createFoodBlock(food, mineral, unit);
-        resultsDiv.appendChild(foodDiv);
+        resultsDiv.append(foodDiv);
     });
 }
 
@@ -100,33 +96,28 @@ function getBackgroundColorByCategory(category) {
 }
 
 function createFoodBlock(food, mineral, unit) {
-    const foodDiv = document.createElement('div');
-    foodDiv.classList.add('food-block');
-    foodDiv.onclick = () => toggleFoodSelection(food, mineral, unit);
+    const foodDiv = $('<div>').addClass('food-block').click(() => toggleFoodSelection(food, mineral, unit));
 
-    const foodDetails = document.createElement('div');
-    foodDetails.classList.add('food-details');
+    const foodDetails = $('<div>').addClass('food-details')
+        .css('background-color', getBackgroundColorByCategory(food['食品分類']))
+        .html(`
+            <strong>${food['樣品名稱'] || 'Unknown'}</strong> <br>
+            含量: ${food[mineral]} <strong>${unit}</strong> <br>
+            分類: ${food['食品分類'] || 'N/A'}
+        `);
 
-    const backgroundColor = getBackgroundColorByCategory(food['食品分類']);
-    foodDetails.style.backgroundColor = backgroundColor;
-
-    foodDetails.innerHTML = `
-        <strong>${food['樣品名稱'] || 'Unknown'}</strong> <br>
-        含量: ${food[mineral]} <strong>${unit}</strong> <br>
-        分類: ${food['食品分類'] || 'N/A'}
-    `;
-    
-    foodDiv.appendChild(foodDetails);
+    foodDiv.append(foodDetails);
     return foodDiv;
 }
 
 function toggleFoodSelection(food, mineral, unit) {
     const foodIndex = selectedFoods.findIndex(selected => selected['樣品名稱'] === food['樣品名稱']);
-    const foodDiv = document.querySelectorAll('.food-block').forEach(block => {
-        if (block.innerText.includes(food['樣品名稱'])) {
-            block.classList.toggle('selected', foodIndex === -1); // Highlight if selected
+
+    $('.food-block').each(function() {
+        if ($(this).text().includes(food['樣品名稱'])) {
+            $(this).toggleClass('selected', foodIndex === -1); // Highlight if selected
         }
-    });
+    })
 
     if (foodIndex === -1) {
         selectedFoods.push(food);
@@ -145,34 +136,25 @@ function updateNutrientTotal(mineral, unit) {
         totalContent += nutrientContent * portionFactor;
     });
 
-    const nutrientTotalElement = document.getElementById('nutrient-total');
-    nutrientTotalElement.textContent = `${totalContent.toFixed(2)} ${unit}`;
+    const nutrientTotalElement = $('#nutrient-total');
+    nutrientTotalElement.text(`${totalContent.toFixed(2)} ${unit}`);
 
-    if (totalContent > nutrientThresholds[mineral]) {
-        nutrientTotalElement.classList.add('warning');
-    } else {
-        nutrientTotalElement.classList.remove('warning');
-    }
+    nutrientTotalElement.toggleClass('warning', totalContent > nutrientThresholds[mineral]);
 }
 
 function resetSelection() {
     selectedFoods = [];
-    document.getElementById('nutrient-total').textContent = '0';
-
-    document.querySelectorAll('.food-block.selected').forEach(block => block.classList.remove('selected'));
-
-    const nutrientTotalElement = document.getElementById('nutrient-total');
-    nutrientTotalElement.classList.remove('warning');
+    $('#nutrient-total').text('0').removeClass('warning');
+    $('.food-block.selected').removeClass('selected');
 }
 
 // Function to switch tabs
 function showTab(tabName) {
-    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
-
-    document.getElementById(tabName).classList.add('active');
-    document.querySelector(`.tab-button[onclick="showTab('${tabName}')"]`).classList.add('active');
+    $('.tab-content').removeClass('active');
+    $('.tab-button').removeClass('active');
+    $(`#${tabName}`).addClass('active');
+    $(`.tab-button[onclick="showTab('${tabName}')"]`).addClass('active');
 }
 
 // Load and display foods on page load
-document.addEventListener('DOMContentLoaded', displayFood);
+$(document).ready(displayFood);
