@@ -11,9 +11,6 @@
 <body>
     <div class="container">
         <div class="left-block">
-            <h1>含量: mg/每100公克食物</h1>
-            <p>資料來源：衛福部食品營養成分資料庫2023版UPDATE1(V2)</p>
-    
             <div class="toggle-mineral">
                 <label>
                     <input type="radio" name="mineral" value="鉀(mg)" onchange="updateMineralDisplay()" checked> 鉀
@@ -25,13 +22,17 @@
                     <input type="radio" name="mineral" value="果糖(g)" onchange="updateMineralDisplay()" > 果糖
                 </label> -->
             </div>
+            <strong>含量: mg/每100公克食物</strong>
+            <p>資料來源：</p>
+            <a href="https://consumer.fda.gov.tw/Food/TFND.aspx?nodeID=178">衛福部食品營養成分資料庫</a>
+    
             <div class="nutrient-counter">
                 <p>總<span id="selected-nutrient">鉀</span>含量：<span id="nutrient-total">0</span> <span id="nutrient-thresholds"></span> </p>
-                <button onclick="resetSelection()">重製選擇</button>
+                <button onclick="resetSelection()">重置選擇</button>
             </div>
         </div>
         <div class="right-block">
-            <h2>已選食品</h2>
+            <strong>已選食品</strong>
             <div id="selected-foods-list"></div>
         </div>
     </div>
