@@ -10,34 +10,41 @@
 </head>
 <body>
     <div class="container">
-        <h1>單位均為每 100 g 可食部分之含量</h1>
-
-        <div class="toggle-mineral">
-            <label>
-                <input type="radio" name="mineral" value="鉀(mg)" onchange="updateMineralDisplay()" checked> 鉀
-            </label>
-            <!-- <label>
-                <input type="radio" name="mineral" value="鈉(mg)" onchange="updateMineralDisplay()" > 鈉
-            </label>
-            <label>
-                <input type="radio" name="mineral" value="果糖(g)" onchange="updateMineralDisplay()" > 果糖
-            </label> -->
+        <div class="left-block">
+            <h1>含量: mg/每100公克食物</h1>
+            <p>資料來源：衛福部食品營養成分資料庫2023版UPDATE1(V2)</p>
+    
+            <div class="toggle-mineral">
+                <label>
+                    <input type="radio" name="mineral" value="鉀(mg)" onchange="updateMineralDisplay()" checked> 鉀
+                </label>
+                <!-- <label>
+                    <input type="radio" name="mineral" value="鈉(mg)" onchange="updateMineralDisplay()" > 鈉
+                </label>
+                <label>
+                    <input type="radio" name="mineral" value="果糖(g)" onchange="updateMineralDisplay()" > 果糖
+                </label> -->
+            </div>
+            <div class="nutrient-counter">
+                <p>總<span id="selected-nutrient">鉀</span>含量：<span id="nutrient-total">0</span> <span id="nutrient-thresholds"></span> </p>
+                <button onclick="resetSelection()">重製選擇</button>
+            </div>
         </div>
-        <div class="nutrient-counter">
-            <p>總<span id="selected-nutrient">鉀</span>含量：<span id="nutrient-total">0</span> <span id="nutrient-thresholds"></span> </p>
-            <button onclick="resetSelection()">重製選擇</button>
+        <div class="right-block">
+            <h2>已選食品</h2>
+            <div id="selected-foods-list"></div>
         </div>
-        <br>
-        <div class="tabs">
-            <button class="tab-button active" onclick="showTab('low')">低含量食品 <br> (小於<span id="low-content-limit"></span>)</button>
-            <button class="tab-button" onclick="showTab('high')">高含量食品 <br> (超過<span id="high-content-limit"></span>)</button>
-        </div>
-        <div id="low" class="tab-content active">
-            <div id="low-results" class="food-grid"></div>
-        </div>
-        <div id="high" class="tab-content">
-            <div id="high-results" class="food-grid"></div>
-        </div>
+    </div>
+    <br>
+    <div class="tabs">
+        <button class="tab-button active" onclick="showTab('low')">低含量食品 <br> (小於<span id="low-content-limit"></span>)</button>
+        <button class="tab-button" onclick="showTab('high')">高含量食品 <br> (超過<span id="high-content-limit"></span>)</button>
+    </div>
+    <div id="low" class="tab-content active">
+        <div id="low-results" class="food-grid"></div>
+    </div>
+    <div id="high" class="tab-content">
+        <div id="high-results" class="food-grid"></div>
     </div>
     <script src="./scripts/app.js"></script>
 </body>

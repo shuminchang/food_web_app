@@ -1,9 +1,49 @@
 .container {
-    max-width: 600px;
+    display: flex;
+    flex-direction: row; /* Ensures left and right blocks are side by side */
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    max-width: 1000px;
     margin: auto;
-    text-align: center;
-    font-family: Arial, Helvetica, sans-serif;
 }
+
+.left-block, .right-block {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.left-block {
+    width: 60%; /* Adjust as needed */
+}
+
+.right-block {
+    width: 35%; /* Adjust as needed */
+    background-color: #f0f8ff;
+}
+
+.right-block h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+#selected-foods-list {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #ffffff;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.food-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
 
 h1 {
     font-size: 2em;
@@ -49,7 +89,7 @@ h1 {
 /* .food-block {
     position: relative;
     color: white;
-    width: 100%;
+    width:category-title 100%;
     aspect-ratio: 1 / 1;
     border-radius: 5px;
     background-size: cover;
@@ -61,22 +101,41 @@ h1 {
 } */
 
 .food-details {
-    background: rgba(110, 144, 255, 0.6);
-    padding: 10px;
-    border-radius: 5px;
-    width: 100%;
-    text-align: left;
-    font-size: 1.2em;
-    line-height: 1.4;
-    box-sizing: border-box;
+    margin: 2px 0;  /* Minimal margin to keep them compact */
+    padding: 5px;
+    font-size: 0.9em;  /* Slightly smaller font size to make it compact */
+    cursor: pointer;   /* Indicate clickable elements */
+    border-radius: 3px;
 }
 
-.food-block.selected {
-    border: 3px solid #4CAF50; /* Green border for selected foods */
-    background-color: #E6F5E1; /* Light green background */
+.food-details.selected {
+    background-color: #E6F5E1; /* Light green for selected items */
+    border: 1px solid #4CAF50; /* Green border for selected items */
+}
+
+.category-title {
+    padding: 5px;
+    font-size: 1.2em;
+    color: #333;
+    font-weight: bold;
+    text-align: left;
 }
 
 .warning {
     color: red;
+    font-weight: bold;
+}
+
+.mineral-content {
+    color: red;
+    /* font-weight: bold; */
+}
+
+.food-name {
+    font-weight: bold;
+}
+
+.food-name.selected {
+    color: blue;
     font-weight: bold;
 }
